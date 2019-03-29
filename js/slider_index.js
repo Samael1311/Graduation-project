@@ -15,7 +15,7 @@ let	slideIndex = 1;
 			}
 			
 		});
-		
+		 
 	}
 
 function showSlides(n){
