@@ -119,24 +119,49 @@ window.addEventListener('DOMContentLoaded', function () {
 /***/ (function(module, exports) {
 
 function difference() {
-  var btnPlus = document.querySelector('.card__click .plus'),
+  var btnPlus = document.querySelector('.officernew .plus'),
       officerold = document.querySelector('.officerold'),
       officernew = document.querySelector('.officernew');
   console.log(btnPlus);
-  var count = 0,
-      copy;
-  btnPlus.addEventListener('click', function () {
-    count++;
+  var copies = {},
+      count = 1,
+      count2 = 1;
 
+  for (var i = 1; i <= 3; i++) {
+    copies[i] = officerold.children[i].cloneNode(true);
+  }
+
+  var plusOld = officernew.children[1].cloneNode(true);
+  officerold.appendChild(plusOld);
+
+  for (var _i = 0; _i < 3; _i++) {
+    officerold.children[1].remove();
+  }
+
+  console.log(copies);
+  btnPlus.addEventListener('click', function () {
     if (count <= 3) {
-      copy = officerold.children[count].cloneNode(true);
+      var copy = copies[count].cloneNode(true);
       officernew.insertBefore(copy, officernew.children[count]);
-      console.log(copy);
     }
 
     if (count == 3) {
-      officernew.children[count + 1].remove();
+      officernew.children[++count].remove();
     }
+
+    count++;
+  });
+  document.querySelector('.officerold .plus').addEventListener('click', function () {
+    if (count2 <= 3) {
+      var copy = copies[count2].cloneNode(true);
+      officerold.insertBefore(copy, officerold.children[count2]);
+    }
+
+    if (count2 == 3) {
+      officerold.children[++count2].remove();
+    }
+
+    count2++;
   });
 }
 
