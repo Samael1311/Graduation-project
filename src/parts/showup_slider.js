@@ -16,9 +16,9 @@ function showupSlider() {
 		plusSlides(1);
 	});
 	btnLeft.addEventListener('click', () => {
-		let active = boxContent.lastChild;
+		let active = boxContent.children[showupSliders.length-1];
+		boxContent.insertBefore(active, boxContent.children[0]);
 		console.log(active);
-		boxContent.insertBefore(active, boxContent.firstChild);
 		plusSlides(-1);
 	});
 	
@@ -33,10 +33,12 @@ function showupSlider() {
 		for (let i = 0; i < showupSliders.length; i++) {
 			showupSliders[i].classList.remove('card-active');
 			showupSliders[i].children[1].style.opacity = '0.4';
+			showupSliders[i].children[0].children[1].style.opacity = '0';
 			
 		}
 		showupSliders[slideIndex-1].classList.add('card-active');
 		showupSliders[slideIndex-1].children[1].style.opacity = '1';
+		showupSliders[slideIndex-1].children[0].children[1].style.opacity = '1';
 	}
 
 
