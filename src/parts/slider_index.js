@@ -2,11 +2,11 @@ function sliderIndex(){
 
 const page = document.querySelector('.page'),
 	slides = page.children,
-	btnChaneSlide = document.querySelectorAll('.sidecontrol a ');
+	btnChangeSlide = document.querySelectorAll('.sidecontrol a ');
 let	slideIndex = 1;
 
-	for (let i = 0; i < btnChaneSlide.length; i++) {
-		btnChaneSlide[i].addEventListener('click', ()=>{
+	for (let i = 0; i < btnChangeSlide.length; i++) {
+		btnChangeSlide[i].addEventListener('click', ()=>{
 			if(i>1 && i%2 == 0){
 				showSlides(slides.length+1);
 			} else if(i%2 != 0){
