@@ -4,13 +4,15 @@ window.addEventListener('DOMContentLoaded', ()=>{
 	let indexSlider = require('./parts/slider_index'),
 			play = require('./parts/play_index'),
 			showupSlider = require('./parts/showup_slider'),
-			goToModules = require('./parts/go_to_modules.js');
+			goToModules = require('./parts/go_to_modules.js'),
+			difference = require('./parts/difference');
 
 
 	indexSlider();
 	play();
 	showupSlider();
 	goToModules();
+	difference();
 
 
 

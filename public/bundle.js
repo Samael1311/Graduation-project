@@ -99,13 +99,48 @@ window.addEventListener('DOMContentLoaded', function () {
   var indexSlider = __webpack_require__(/*! ./parts/slider_index */ "./parts/slider_index.js"),
       play = __webpack_require__(/*! ./parts/play_index */ "./parts/play_index.js"),
       showupSlider = __webpack_require__(/*! ./parts/showup_slider */ "./parts/showup_slider.js"),
-      goToModules = __webpack_require__(/*! ./parts/go_to_modules.js */ "./parts/go_to_modules.js");
+      goToModules = __webpack_require__(/*! ./parts/go_to_modules.js */ "./parts/go_to_modules.js"),
+      difference = __webpack_require__(/*! ./parts/difference */ "./parts/difference.js");
 
   indexSlider();
   play();
   showupSlider();
   goToModules();
+  difference();
 });
+
+/***/ }),
+
+/***/ "./parts/difference.js":
+/*!*****************************!*\
+  !*** ./parts/difference.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function difference() {
+  var btnPlus = document.querySelector('.card__click .plus'),
+      officerold = document.querySelector('.officerold'),
+      officernew = document.querySelector('.officernew');
+  console.log(btnPlus);
+  var count = 0,
+      copy;
+  btnPlus.addEventListener('click', function () {
+    count++;
+
+    if (count <= 3) {
+      copy = officerold.children[count].cloneNode(true);
+      officernew.insertBefore(copy, officernew.children[count]);
+      console.log(copy);
+    }
+
+    if (count == 3) {
+      officernew.children[count + 1].remove();
+    }
+  });
+}
+
+module.exports = difference;
 
 /***/ }),
 
@@ -119,7 +154,6 @@ window.addEventListener('DOMContentLoaded', function () {
 function goToModules() {
   var links = document.querySelectorAll('.showup__content-slider a'),
       btnPlus = document.querySelector('.showup__content-explore .plus');
-  console.log(btnPlus);
   btnPlus.addEventListener('click', function () {
     window.location.href = 'modules.html#1';
   });

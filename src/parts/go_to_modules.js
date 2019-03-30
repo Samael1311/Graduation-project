@@ -2,7 +2,6 @@ function goToModules(){
 
 	let links = document.querySelectorAll('.showup__content-slider a'),
 	btnPlus = document.querySelector('.showup__content-explore .plus');
-	console.log(btnPlus);
 
 
 
