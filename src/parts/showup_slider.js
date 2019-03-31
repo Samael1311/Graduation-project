@@ -18,7 +18,6 @@ function showupSlider() {
 	btnLeft.addEventListener('click', () => {
 		let active = boxContent.children[showupSliders.length-1];
 		boxContent.insertBefore(active, boxContent.children[0]);
-		console.log(active);
 		plusSlides(-1);
 	});
 	

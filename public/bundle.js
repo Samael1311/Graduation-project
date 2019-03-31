@@ -100,13 +100,17 @@ window.addEventListener('DOMContentLoaded', function () {
       play = __webpack_require__(/*! ./parts/play_index */ "./parts/play_index.js"),
       showupSlider = __webpack_require__(/*! ./parts/showup_slider */ "./parts/showup_slider.js"),
       goToModules = __webpack_require__(/*! ./parts/go_to_modules.js */ "./parts/go_to_modules.js"),
-      difference = __webpack_require__(/*! ./parts/difference */ "./parts/difference.js");
+      difference = __webpack_require__(/*! ./parts/difference */ "./parts/difference.js"),
+      page3 = __webpack_require__(/*! ./parts/page3 */ "./parts/page3.js"),
+      helpForm = __webpack_require__(/*! ./parts/help_form */ "./parts/help_form.js");
 
   indexSlider();
   play();
   showupSlider();
   goToModules();
   difference();
+  page3();
+  helpForm();
 });
 
 /***/ }),
@@ -201,6 +205,162 @@ module.exports = goToModules;
 
 /***/ }),
 
+/***/ "./parts/help_form.js":
+/*!****************************!*\
+  !*** ./parts/help_form.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function helpForm() {
+  var message = {
+    loading: '<img src="img/ajax-loader.gif" alt="Загрузка...">',
+    succes: '<img src="img/tenor.gif" alt="Спасибо! Скоро мы с вами свяжемся!">',
+    failure: '<img src="img/warning.png" alt="Что-то пошло не так...">'
+  },
+      form = document.querySelector('.join__evolution form'),
+      inputs = form.getElementsByTagName('input'),
+      statusMessage = document.createElement('div'),
+      phone = document.querySelector('.join__evolution #phone');
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    sendMessage(form).then(function () {
+      return statusMessage.innerHTML = message.loading;
+    }).then(function () {
+      return statusMessage.innerHTML = message.succes;
+    }).catch(function () {
+      return statusMessage.innerHTML = message.failure;
+    }).then(clearInputs);
+  });
+
+  var sendMessage = function sendMessage(form) {
+    form.appendChild(statusMessage);
+    var formData = new FormData(form);
+    return new Promise(function (resolve, reject) {
+      var request = new XMLHttpRequest();
+      request.open('POST', 'server.php');
+      request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+      var obj = {};
+      formData.forEach(function (value, key) {
+        if (value != '') {
+          obj[key] = value;
+        }
+      });
+      var json = JSON.stringify(obj);
+      request.addEventListener('readystatechange', function () {
+        if (request.readyState < 4) {
+          resolve();
+        } else if (request.readyState === 4) {
+          if (request.status == 200 && request.status < 3) {
+            resolve();
+          } else {
+            reject();
+          }
+        }
+      });
+      request.send(json);
+    });
+  };
+
+  function clearInputs() {
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].value = '';
+    }
+  }
+
+  inputs[2].addEventListener('keyup', function (e) {
+    e.target.value = e.target.value.replace(/[а-яА-ЯёЁ]/g, '');
+  });
+  phone.addEventListener('keyup', function (event) {
+    console.log(+event.target.value.slice(-1));
+
+    if (Number.isInteger(+event.target.value.slice(-1))) {
+      var char = event.target.value;
+
+      if (phone.value.length == 1) {
+        event.target.value = '+1(' + char;
+      }
+
+      if (char.match(/^\+\d{1}\(\d{3}$/) !== null) {
+        event.target.value = char + ')';
+      } else if (char.match(/^\+\d{1}\(\d{3}\)\d{3}$/) !== null) {
+        event.target.value = char + '-';
+      }
+    } else {
+      event.target.value = '';
+    }
+  });
+}
+
+module.exports = helpForm;
+
+/***/ }),
+
+/***/ "./parts/page3.js":
+/*!************************!*\
+  !*** ./parts/page3.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function page3() {
+  var sliders = document.querySelectorAll('.modules__content-slider .card'),
+      boxContent = document.querySelector('.modules__content-slider'),
+      btnPrev = document.querySelector('.modules__info-btns .slick-prev'),
+      btnNext = document.querySelector('.modules__info-btns .slick-next');
+  boxContent.style.display = '-webkit-inline-box';
+  boxContent.style.overflow = 'hidden';
+  var slideIndex = 1;
+
+  function next() {
+    var active = document.querySelector('.modules__content-slider a.card-active');
+    boxContent.appendChild(active);
+    plusSlides(1);
+  }
+
+  btnNext.addEventListener('click', function () {
+    next();
+  });
+  btnPrev.addEventListener('click', function () {
+    var active = boxContent.children[sliders.length - 1];
+    boxContent.insertBefore(active, boxContent.children[0]);
+    plusSlides(-1);
+  });
+
+  function moveSlides(n) {
+    if (n > sliders.length) {
+      slideIndex = 1;
+    }
+
+    if (n < 1) {
+      slideIndex = sliders.length;
+    }
+
+    for (var i = 0; i < sliders.length; i++) {
+      sliders[i].classList.remove('card-active');
+      sliders[i].children[1].style.opacity = '0.4';
+      sliders[i].children[0].children[1].style.opacity = '0';
+    }
+
+    sliders[slideIndex - 1].classList.add('card-active');
+    sliders[slideIndex - 1].children[1].style.opacity = '1';
+    sliders[slideIndex - 1].children[0].children[1].style.opacity = '1';
+  }
+
+  function plusSlides(n) {
+    moveSlides(slideIndex += n);
+  }
+
+  moveSlides(slideIndex);
+  setInterval(function () {
+    next();
+  }, 4000);
+}
+
+module.exports = page3;
+
+/***/ }),
+
 /***/ "./parts/play_index.js":
 /*!*****************************!*\
   !*** ./parts/play_index.js ***!
@@ -260,7 +420,6 @@ function showupSlider() {
   btnLeft.addEventListener('click', function () {
     var active = boxContent.children[showupSliders.length - 1];
     boxContent.insertBefore(active, boxContent.children[0]);
-    console.log(active);
     plusSlides(-1);
   });
 
@@ -305,8 +464,10 @@ module.exports = showupSlider;
 function sliderIndex() {
   var page = document.querySelector('.page'),
       slides = page.children,
-      btnChangeSlide = document.querySelectorAll('.sidecontrol a ');
+      btnChangeSlide = document.querySelectorAll('.sidecontrol a '),
+      hanson = document.querySelector('.hanson');
   var slideIndex = 1;
+  hanson.style.display = 'none';
 
   var _loop = function _loop(i) {
     btnChangeSlide[i].addEventListener('click', function () {
@@ -329,6 +490,12 @@ function sliderIndex() {
 
     if (n < 1) {
       slideIndex = slides.length;
+    }
+
+    if (n == 3) {
+      setTimeout(function () {
+        hanson.style.display = 'block';
+      }, 3000);
     }
 
     for (var i = 0; i < slides.length; i++) {
