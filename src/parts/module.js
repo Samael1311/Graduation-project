@@ -74,6 +74,8 @@ let message;
 for (let i = 0; i < md.length; i++) {
 	message = document.createElement('div');
 	message.classList.add('msg');
+	message.classList.add('animated');
+	//message.classList.add('slideInUp');
 	message.style.display = 'none';
 	message.innerHTML = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 	md[i].insertBefore(message, md[i].children[5]);
@@ -86,6 +88,7 @@ for (let i = 0; i < btnPlus.length; i++) {
 		
 		if(md[i].getElementsByClassName('msg')[0].style.display == 'none'){
 			md[i].getElementsByClassName('msg')[0].style.display = 'block';
+			md[i].getElementsByClassName('msg')[0].classList.add('slideInUp');
 		}else if (md[i].getElementsByClassName('msg')[0].style.display == 'block'){
 			md[i].getElementsByClassName('msg')[0].style.display = 'none';
 		}
