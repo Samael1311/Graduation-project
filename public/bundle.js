@@ -102,7 +102,8 @@ window.addEventListener('DOMContentLoaded', function () {
       goToModules = __webpack_require__(/*! ./parts/go_to_modules.js */ "./parts/go_to_modules.js"),
       difference = __webpack_require__(/*! ./parts/difference */ "./parts/difference.js"),
       page3 = __webpack_require__(/*! ./parts/page3 */ "./parts/page3.js"),
-      helpForm = __webpack_require__(/*! ./parts/help_form */ "./parts/help_form.js");
+      helpForm = __webpack_require__(/*! ./parts/help_form */ "./parts/help_form.js"),
+      showingUp = __webpack_require__(/*! ./parts/showing_up */ "./parts/showing_up.js");
 
   indexSlider();
   play();
@@ -111,6 +112,7 @@ window.addEventListener('DOMContentLoaded', function () {
   difference();
   page3();
   helpForm();
+  showingUp();
 });
 
 /***/ }),
@@ -221,10 +223,26 @@ function helpForm() {
       form = document.querySelector('.join__evolution form'),
       inputs = form.getElementsByTagName('input'),
       statusMessage = document.createElement('div'),
-      phone = document.querySelector('.join__evolution #phone');
+      phone = document.querySelector('.join__evolution #phone'),
+      scheduleForm = document.querySelector('.schedule__form form'),
+      scheduleInputs = scheduleForm.getElementsByTagName('input'),
+      btnNext = document.querySelector('.join .next');
+  btnNext.addEventListener('click', function () {
+    statusMessage.remove();
+  });
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     sendMessage(form).then(function () {
+      return statusMessage.innerHTML = message.loading;
+    }).then(function () {
+      return statusMessage.innerHTML = message.succes;
+    }).catch(function () {
+      return statusMessage.innerHTML = message.failure;
+    }).then(clearInputs);
+  });
+  scheduleForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    sendMessage(scheduleForm).then(function () {
       return statusMessage.innerHTML = message.loading;
     }).then(function () {
       return statusMessage.innerHTML = message.succes;
@@ -245,6 +263,8 @@ function helpForm() {
         if (value != '') {
           obj[key] = value;
         }
+
+        console.log(value);
       });
       var json = JSON.stringify(obj);
       request.addEventListener('readystatechange', function () {
@@ -266,11 +286,26 @@ function helpForm() {
     for (var i = 0; i < inputs.length; i++) {
       inputs[i].value = '';
     }
+
+    for (var _i = 0; _i < scheduleInputs.length; _i++) {
+      scheduleInputs[_i].value = '';
+    }
   }
 
   inputs[2].addEventListener('keyup', function (e) {
-    e.target.value = e.target.value.replace(/[а-яА-ЯёЁ]/g, '');
+    onlyEmailChars(e);
   });
+  scheduleInputs[1].addEventListener('keyup', function (e) {
+    onlyEmailChars(e);
+  });
+  scheduleInputs[2].addEventListener('keyup', function (e) {
+    e.target.value = e.target.value.replace(/[^\d\.\/]/g, '');
+  });
+
+  function onlyEmailChars(e) {
+    e.target.value = e.target.value.replace(/[а-яА-ЯёЁ]/g, '');
+  }
+
   phone.addEventListener('keyup', function (event) {
     console.log(+event.target.value.slice(-1));
 
@@ -397,6 +432,64 @@ module.exports = play;
 
 /***/ }),
 
+/***/ "./parts/showing_up.js":
+/*!*****************************!*\
+  !*** ./parts/showing_up.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function showingUp() {
+  var sliders = document.querySelectorAll('.feed__slider .feed__item'),
+      boxContent = document.querySelector('.feed__slider'),
+      btnPrev = document.querySelector('.feed__slider .slick-prev'),
+      btnNext = document.querySelector('.feed__slider .slick-next');
+  console.log(sliders);
+  boxContent.style.display = '-webkit-inline-box';
+  boxContent.style.overflow = 'hidden';
+  var slideIndex = 1;
+  btnNext.addEventListener('click', function () {
+    var active = document.querySelector('.feed__item-active'); //boxContent.appendChild(active);
+
+    boxContent.insertBefore(active, boxContent.children[6]);
+    plusSlides(1);
+    console.log(boxContent);
+  });
+  btnPrev.addEventListener('click', function () {
+    var active = boxContent.children[sliders.length - 1];
+    boxContent.insertBefore(active, boxContent.children[0]);
+    plusSlides(-1);
+  });
+
+  function moveSlides(n) {
+    if (n > sliders.length) {
+      slideIndex = 1;
+    }
+
+    if (n < 1) {
+      slideIndex = sliders.length;
+    }
+
+    for (var i = 0; i < sliders.length; i++) {
+      sliders[i].classList.remove('feed__item-active'); //	sliders[i].children[1].style.opacity = '0.4';
+      //	sliders[i].children[0].children[1].style.opacity = '0';
+    }
+
+    sliders[slideIndex - 1].classList.add('feed__item-active'); //sliders[slideIndex-1].children[1].style.opacity = '1';
+    //sliders[slideIndex-1].children[0].children[1].style.opacity = '1';
+  }
+
+  function plusSlides(n) {
+    moveSlides(slideIndex += n);
+  }
+
+  moveSlides(slideIndex);
+}
+
+module.exports = showingUp;
+
+/***/ }),
+
 /***/ "./parts/showup_slider.js":
 /*!********************************!*\
   !*** ./parts/showup_slider.js ***!
@@ -496,6 +589,8 @@ function sliderIndex() {
       setTimeout(function () {
         hanson.style.display = 'block';
       }, 3000);
+    } else {
+      hanson.style.display = 'none';
     }
 
     for (var i = 0; i < slides.length; i++) {

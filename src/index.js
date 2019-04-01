@@ -7,7 +7,8 @@ window.addEventListener('DOMContentLoaded', ()=>{
 			goToModules = require('./parts/go_to_modules.js'),
 			difference = require('./parts/difference'),
 			page3 = require('./parts/page3'),
-			helpForm = require('./parts/help_form');
+			helpForm = require('./parts/help_form'),
+			showingUp = require('./parts/showing_up');
 
 
 	indexSlider();
@@ -17,7 +18,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
 	difference();
 	page3();
 	helpForm();
-
+	showingUp();
 
 
 	

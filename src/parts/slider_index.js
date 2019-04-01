@@ -32,7 +32,7 @@ function sliderIndex() {
 			setTimeout(() => {
 				hanson.style.display = 'block';
 			}, 3000);
-		}
+		} else {hanson.style.display = 'none';}
 		for (let i = 0; i < slides.length; i++) {
 			slides[i].style.display = 'none';
 		}

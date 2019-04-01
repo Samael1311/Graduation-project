@@ -8,16 +8,34 @@ function helpForm() {
 		form = document.querySelector('.join__evolution form'),
 		inputs = form.getElementsByTagName('input'),
 		statusMessage = document.createElement('div'),
-		phone = document.querySelector('.join__evolution #phone');
+		phone = document.querySelector('.join__evolution #phone'),
+
+		scheduleForm = document.querySelector('.schedule__form form'),
+		scheduleInputs = scheduleForm.getElementsByTagName('input'),
+		btnNext = document.querySelector('.join .next');
 
 
-	form.addEventListener('submit', function (event) {
+		btnNext.addEventListener('click', ()=>{
+			statusMessage.remove();
+		});
+
+	form.addEventListener('submit', (event) =>{
 		event.preventDefault();
 		sendMessage(form)
 			.then(() => statusMessage.innerHTML = message.loading)
 			.then(() => statusMessage.innerHTML = message.succes)
 			.catch(() => statusMessage.innerHTML = message.failure)
 			.then(clearInputs);
+	});
+
+	scheduleForm.addEventListener('submit', (event)=>{
+		event.preventDefault();
+		sendMessage(scheduleForm)
+			.then(() => statusMessage.innerHTML = message.loading)
+			.then(() => statusMessage.innerHTML = message.succes)
+			.catch(() => statusMessage.innerHTML = message.failure)
+			.then(clearInputs);
+
 	});
 
 	let sendMessage = (form) => {
@@ -34,7 +52,7 @@ function helpForm() {
 				if (value != '') {
 					obj[key] = value;
 				}
-
+				console.log(value);
 			});
 			let json = JSON.stringify(obj);
 
@@ -59,14 +77,32 @@ function helpForm() {
 		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].value = '';
 		}
+		for (let i = 0; i < scheduleInputs.length; i++) {
+			scheduleInputs[i].value = '';
+			
+		}
 
 	}
 
 	inputs[2].addEventListener('keyup', function (e) {
-		e.target.value = e.target.value.replace(/[а-яА-ЯёЁ]/g, '');
+		onlyEmailChars(e);
 
 	});
 
+	scheduleInputs[1].addEventListener('keyup', function (e) {
+		onlyEmailChars(e);
+
+	});
+	scheduleInputs[2].addEventListener('keyup', function (e) {
+
+		e.target.value = e.target.value.replace(/[^\d\.\/]/g, '');
+
+	});
+
+
+	function onlyEmailChars(e){
+		e.target.value = e.target.value.replace(/[а-яА-ЯёЁ]/g, '');
+	}
 
 	phone.addEventListener('keyup', (event) => {
 
@@ -89,7 +125,7 @@ function helpForm() {
 
 	});
 
-
+	
 
 }
 
