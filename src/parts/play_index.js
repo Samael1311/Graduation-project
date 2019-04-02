@@ -1,38 +1,47 @@
+function play() {
 
-function play(){
-	
 	let btnPlay = document.querySelector('.showup__video .play'),
-	overlay = document.querySelector('.overlay'),
-	blockVideo = document.querySelector('.video');
-	framePlay = document.querySelector('#iframe');
+		overlay = document.querySelector('.overlay'),
+		blockVideo = document.querySelector('.overlay .video'),
+		btnClose = document.querySelector('.overlay .close');
+	framePlay = document.querySelector('.video iframe');
 
-	
 
-	btnPlay.addEventListener('click', (ev)=>{
-	overlay.style.display = 'block';
-	let path = btnPlay.getAttribute('data-url');
-	//videoPlayReady(path);
 
-	console.log(path);
-	ev.preventDefault();
 
-});
- 
+	blockVideo.style.top = "30%";
+	blockVideo.style.left = "30%";
+	blockVideo.classList.add('animated');
 
-function videoPlayReady(path){
+	btnPlay.addEventListener('click', (ev) => {
 
-	framePlay.setAttribute('src', path);
-	framePlay.style.top = '250px';
-let player = new YouTubePlayer.Player('player', {
-		events: {
-			'onReady': onPlayerReady,
-			'onStateChange': onPlayerStateChange
-		}
+		let path = btnPlay.getAttribute('data-url');
+		videoPlayReady(path);
+		overlay.style.display = 'block';
+		blockVideo.classList.add('fadeInDown');
+
+
+
+		ev.preventDefault();
+
 	});
 
-}
 
- 
+	btnClose.addEventListener('click', () => {
+		overlay.style.display = 'none';
+		videoPlayReady('');
+	});
+
+
+	function videoPlayReady(path) {
+
+		framePlay.setAttribute('src', path);
+		framePlay.style.top = '250px';
+
+
+	}
+
+
 
 }
 

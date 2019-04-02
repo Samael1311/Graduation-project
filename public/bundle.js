@@ -239,6 +239,9 @@ function helpForm() {
     }).catch(function () {
       return statusMessage.innerHTML = message.failure;
     }).then(clearInputs);
+    setTimeout(function () {
+      statusMessage.remove();
+    }, 3500);
   });
   scheduleForm.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -263,8 +266,6 @@ function helpForm() {
         if (value != '') {
           obj[key] = value;
         }
-
-        console.log(value);
       });
       var json = JSON.stringify(obj);
       request.addEventListener('readystatechange', function () {
@@ -307,8 +308,6 @@ function helpForm() {
   }
 
   phone.addEventListener('keyup', function (event) {
-    console.log(+event.target.value.slice(-1));
-
     if (Number.isInteger(+event.target.value.slice(-1))) {
       var char = event.target.value;
 
@@ -406,25 +405,27 @@ module.exports = page3;
 function play() {
   var btnPlay = document.querySelector('.showup__video .play'),
       overlay = document.querySelector('.overlay'),
-      blockVideo = document.querySelector('.video');
-  framePlay = document.querySelector('#iframe');
+      blockVideo = document.querySelector('.overlay .video'),
+      btnClose = document.querySelector('.overlay .close');
+  framePlay = document.querySelector('.video iframe');
+  blockVideo.style.top = "30%";
+  blockVideo.style.left = "30%";
+  blockVideo.classList.add('animated');
   btnPlay.addEventListener('click', function (ev) {
+    var path = btnPlay.getAttribute('data-url');
+    videoPlayReady(path);
     overlay.style.display = 'block';
-    var path = btnPlay.getAttribute('data-url'); //videoPlayReady(path);
-
-    console.log(path);
+    blockVideo.classList.add('fadeInDown');
     ev.preventDefault();
+  });
+  btnClose.addEventListener('click', function () {
+    overlay.style.display = 'none';
+    videoPlayReady('');
   });
 
   function videoPlayReady(path) {
     framePlay.setAttribute('src', path);
     framePlay.style.top = '250px';
-    var player = new YouTubePlayer.Player('player', {
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
-    });
   }
 }
 

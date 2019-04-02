@@ -1,3 +1,4 @@
+
 window.addEventListener('DOMContentLoaded', ()=>{
 	'use strict';
 
@@ -9,6 +10,8 @@ window.addEventListener('DOMContentLoaded', ()=>{
 			page3 = require('./parts/page3'),
 			helpForm = require('./parts/help_form'),
 			showingUp = require('./parts/showing_up');
+
+
 
 
 	indexSlider();

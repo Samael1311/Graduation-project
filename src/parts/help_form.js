@@ -26,6 +26,10 @@ function helpForm() {
 			.then(() => statusMessage.innerHTML = message.succes)
 			.catch(() => statusMessage.innerHTML = message.failure)
 			.then(clearInputs);
+
+			setTimeout(()=>{
+				statusMessage.remove();
+			}, 3500);
 	});
 
 	scheduleForm.addEventListener('submit', (event)=>{
@@ -52,7 +56,7 @@ function helpForm() {
 				if (value != '') {
 					obj[key] = value;
 				}
-				console.log(value);
+			
 			});
 			let json = JSON.stringify(obj);
 
@@ -106,7 +110,6 @@ function helpForm() {
 
 	phone.addEventListener('keyup', (event) => {
 
-		console.log(+event.target.value.slice(-1));
 		if (Number.isInteger(+event.target.value.slice(-1))) {
 			let char = event.target.value;
 
