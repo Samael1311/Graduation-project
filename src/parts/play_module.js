@@ -5,7 +5,8 @@
  	overlay = document.querySelector('.overlay'),
  	blockVideo = document.querySelector('.overlay .video'),
 	 btnClose = document.querySelector('.overlay .close'),
-	 frames = document.querySelectorAll('.frame');
+	 frames = document.querySelectorAll('.frame'),
+	 clone = btnPlay[0].querySelector('svg').cloneNode(true);
  //framePlay = document.querySelector('.video iframe');
 
  blockVideo.style.top = "30%";
@@ -31,10 +32,10 @@ setTimeout(()=>{
 			height: '360',
 			width: '640',
 		 videoId: id,
-		 playerVars: { 'showinfo': 0,'enablejsapi':1,'origin':'http://localhost:8000'},
+		 //playerVars: { 'showinfo': 0,'enablejsapi':1,'origin':'http://localhost:8000'},
 		 allowfullscreen: 'true',
 		 events: {
-			 //'onReady': onPlayerReady,
+			 //'onReady',
 			 'onStateChange': onPlayerStateChange
 		 }
 	 });
@@ -52,11 +53,18 @@ setTimeout(()=>{
 
  		if (btnPlay[i].children[0].classList.value != 'play__circle closed') {
 
-			players[i].playVideo();
- 			overlay.style.display = 'block';
- 			blockVideo.classList.add('fadeInDown');
-			ev.preventDefault();
-			document.querySelector('iframe#vid'+i).style.display = 'block';
+			
+				 function onPlayerReady(e) {
+					players[i].playVideo();
+
+ }
+				
+					overlay.style.display = 'block';
+					blockVideo.classList.add('fadeInDown');
+				 ev.preventDefault();
+				 document.querySelector('iframe#vid'+i).style.display = 'block';
+		
+			
 					
 		}
 
@@ -66,15 +74,16 @@ setTimeout(()=>{
 					if (btnPlay[i + 1].children[0].classList.value == 'play__circle closed') {
 						btnPlay[i + 1].children[0].classList.remove('closed');
 						btnPlay[i + 1].querySelector('svg').remove();
-					//	btnPlay[i + 1].insertBefore(btnPlay[i].querySelector('svg').cloneNode(true), document.querySelector('.play__circle')[i + 1].children[0]);
+					  btnPlay[i + 1].children[0].appendChild(clone);//смена знака
 						document.querySelectorAll('div .module__video-item')[i+1].style.opacity = 1;
-						console.log(btnPlay[i].querySelector('svg'));
+						console.log(btnPlay[i].querySelector('svg')); 
 					}
 				}
 			}); 
+	
+
 	 });
 
-	
 
  }
 
@@ -94,13 +103,12 @@ setTimeout(()=>{
 });
 
 
-// function onPlayerReady(e) {
-// 	console.log(e);
+//  function onPlayerReady(e) {
 
-// 	e.target.playVideo();
-		
+// 	 //e.target.playVideo();	
+	
 
-// }
+//  }
 
 function stop() {
 	
